@@ -4,7 +4,7 @@ import {
   IsNotEmpty,
   IsEnum,
 } from "class-validator";
-import { ShipmentType } from 'libs/application/shipment-type.enum';
+import { ShipmentType } from '../domain/shipment/shipment-type.enum';
 import { Transform } from "class-transformer";
 
 export class ShipmentDto {

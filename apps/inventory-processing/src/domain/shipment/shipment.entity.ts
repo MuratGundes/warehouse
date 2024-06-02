@@ -9,7 +9,7 @@ import {
 import { InventoryProduct } from '../inventory-product/inventory-product.entity';
 import { InventoryWarehouse } from '../inventory-warehouse/inventory-warehouse.entity';
 import { AggregateRoot } from '@nestjs/cqrs';
-import { ShipmentType } from 'libs/application/shipment-type.enum';
+import { ShipmentType } from './shipment-type.enum';
 
 @Entity()
 export class Shipment extends AggregateRoot {

@@ -1,4 +1,4 @@
-import { ShipmentType } from 'libs/application/shipment-type.enum';
+import { ShipmentType } from '../../domain/shipment/shipment-type.enum';
 
 export class CreateShipmentCommand {
   constructor(
