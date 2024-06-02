@@ -1,0 +1,90 @@
+version: '3.8'
+
+services:
+  postgres:
+    hostname: warehouse-postgres
+    build:
+      context: ./scripts/db  #TODO: 001_create_and_seed.sql script needs to be updated. And it would be better to use different schema for each microservice
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_PASSWORD=postgres
+    restart: always
+    networks:
+      - product-warehouse
+
+  rabbitmq:
+    image: rabbitmq:3.11.28-management
+    container_name: warehouse-rabbitmq
+    restart: always
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+
+  product:
+    container_name: product-app
+    depends_on:
+      - postgres
+    build:
+      context: ./
+      dockerfile: ./apps/product/Dockerfile
+    ports:
+      - '3000:3000'
+    networks:
+      - product-warehouse
+    volumes:
+      - /app/node_modules
+      - .:/app
+    restart: on-failure
+
+  warehouse:
+    container_name: warehouse-app
+    depends_on:
+      - postgres
+    build:
+      context: ./
+      dockerfile: ./apps/warehouse/Dockerfile
+    ports:
+      - '3001:3001'
+    networks:
+      - product-warehouse
+    volumes:
+      - /app/node_modules
+      - .:/app
+    restart: on-failure
+
+  customer:
+    container_name: customer-app
+    depends_on:
+      - postgres
+    build:
+      context: ./
+      dockerfile: ./apps/customer/Dockerfile
+    ports:
+      - '3002:3002'
+    networks:
+      - product-warehouse
+    volumes:
+      - /app/node_modules
+      - .:/app
+    restart: on-failure
+
+  inventory-processing:
+    container_name: inventory-processing-app
+    depends_on:
+      - postgres
+    build:
+      context: ./
+      dockerfile: ./apps/inventory-processing/Dockerfile
+    ports:
+      - '3003:3003'
+    networks:
+      - product-warehouse
+    volumes:
+      - /app/node_modules
+      - .:/app
+    restart: on-failure
+
+networks:
+  product-warehouse:
+    driver: bridge

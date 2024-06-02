@@ -1,0 +1,56 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type Mutation {
+  createWarehouse(warehouseDto: WarehouseDto!): Warehouse!
+}
+
+type Query {
+  getWarehouseByCustomerId(customerId: String!): [Warehouse!]!
+  getWarehouseById(warehouseId: Float!): Warehouse!
+  getWarehouses: [Warehouse!]!
+}
+
+"""Warehouse"""
+type Warehouse {
+  capacity: Int!
+  created_at: DateTime!
+  customer: WarehouseCustomer!
+  id: Int!
+  inventories: [WarehouseInventory!]!
+  isActive: Boolean!
+  location: String!
+  name: String!
+}
+
+"""WarehouseCustomer"""
+type WarehouseCustomer {
+  customerId: String!
+  id: Int!
+  syncedAt: DateTime!
+  updatedAt: DateTime!
+  warehouses: [Warehouse!]!
+}
+
+input WarehouseDto {
+  capacity: Float!
+  customerId: String!
+  isActive: Boolean!
+  location: String!
+  name: String!
+}
+
+"""WarehouseInventory"""
+type WarehouseInventory {
+  id: Int!
+  inventoryId: Int!
+  syncedAt: DateTime!
+  updatedAt: DateTime!
+  warehouse: Warehouse!
+}
